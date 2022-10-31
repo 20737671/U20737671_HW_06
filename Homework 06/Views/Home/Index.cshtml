@@ -1,0 +1,65 @@
+﻿
+<!DOCTYPE html>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+
+<html>
+
+<body>
+
+    <canvas id="lnchrt" style="width:200px;height:100px"></canvas>
+
+    <script>
+
+        var LineCol = ["lightblue"];
+        var BackCol = ["darkred"];
+
+        var xVal = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        var yVal = [163, 152, 200, 211, 139, 127, 122, 148, 160, 125, 118, 90];
+
+        new Chart("lnchrt", {
+            animationEnabled: false,
+            type: "line",
+            
+            data: {
+                labels: xVal,
+                datasets: [{
+                    
+                    backgroundColor: LineCol,
+                    borderColor: BackCol,
+                    data: yVal
+                }]
+            },
+            options: {
+
+                legend: {
+                    display: true,
+                    text: "Bikes sold",
+                    labels: "Bikes sold",
+                    
+                    labels: {
+                        usePointStyle: true,
+                        fontColor: "#800020",
+                        text: "Bikes sold",
+                        title: "Bikes sold"
+                    }
+                   
+                },
+                title: {
+                    display: true,
+                    text: "Mountain bikes sold per month for the year"
+                },
+                animation: {
+                    duration: 0,
+
+                },
+                hover: {
+                    animationDuration: 0, // duration of animations when hovering an item
+                },
+                responsiveAnimationDuration: 0, // animation duration after a resize
+            }
+        });
+    </script>
+
+</body>
+</html>

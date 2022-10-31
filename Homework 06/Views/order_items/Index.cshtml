@@ -1,0 +1,231 @@
+﻿@model PagedList.IPagedList<Homework_06.Models.order_items>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+
+@using PagedList.Mvc;
+@using PagedList;
+
+
+<h2>Orders</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@*@{
+    ViewBag.Title = "Use of jQuery Datepicker In an MVC Application";
+}
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+<script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+<script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+<script>
+    $(function () {
+        $("#1Search").datepicker();
+    });
+</script>
+<h2>jQuery Datepicker</h2>
+@using (Html.BeginForm("Index", "order_items"))
+{
+    <p>
+        @Html.TextBox("Datepicker", "", new { @id = "txtdatepicker", @style = "width:150px;" })
+        <br />
+        Your selected date :@ViewBag.DateValue
+        <br /><input type="submit" value="Submit" />
+    </p>
+}*@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@*///////////////////////////////////////////////////////////////////////////////*@
+
+
+
+
+
+<label>
+    Search by Date:
+    <input type="date" name="DateString" placeholder="Search" id="1Search" value="datum" aria-label="Search" required pattern="\d{4}-\d{2}-\d{2}" />
+    <span class="validity"></span>
+    <button class="btn btn-primary" type="submit" value="1Search">Search</button>
+</label>
+
+
+
+@*<script>
+    $("#1Search").datepicker({
+        $.get("/order_items/DateFilter", { "date": date }).done(function (result) {
+            $('#myDiv').html(result);
+        }
+    });
+</script>
+
+<div id="myDiv">
+
+    <button class="btn btn-primary" type="submit" value="Search">Search</button>
+
+</div>*@
+
+<form asp-action="Index" method="get">
+
+
+    @*<label>
+            Search by Date:
+            <input type="date" name="DateString" placeholder="Search" id="1Search" value="datum" aria-label="Search" required pattern="\d{4}-\d{2}-\d{2}" />
+            <span class="validity"></span>
+            <button class="btn btn-primary" type="submit" value="1Search">Search</button>
+        </label>*@
+
+
+    @*@(Html.Kendo().DatePickerFor(x => x.myStartDate)
+        .HtmlAttributes( new {id="startDate", style = "width:252px;"}))*@
+
+
+</form>
+
+
+
+@{
+    var asbwerk  = Model.GroupBy(x => x.order).Select(x => new { order_id = x.Key, product = x });
+
+    var werktog = Model.GroupBy(x => x.order).Select(x => new { order_date = x.Key, product = x }).ToList();
+}
+
+
+
+<div>
+    @foreach (var order_bucket in asbwerk)
+    {
+
+
+
+
+
+        <table class="table">
+            <tr>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.First().product.product_name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().list_price)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().quantity)
+                </th>
+                <td>
+                    <b>Total</b>
+                </td>
+
+
+
+                <th></th>
+            </tr>
+
+
+            @{
+
+                decimal total = 0;
+                decimal Grandtotal = 0;
+
+
+
+
+            }
+
+
+
+            <p>Order @order_bucket.order_id.order_id - @order_bucket.order_id.order_date.ToString("yyyy/MM/dd")  </p>
+            @foreach (var item in order_bucket.product)
+
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.product.product_name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.list_price)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.quantity)
+                    </td>
+                    <td>
+                        @{
+
+                            total = item.product.list_price * item.quantity;
+                            Grandtotal = total + Grandtotal;
+
+
+                        }
+
+
+
+                        @total
+                    </td>
+
+
+                </tr>
+            }
+            <tr>
+                <td>
+                </td>
+                <td>
+                </td>
+                <td>
+                    <p><I>Grand Total:</I></p>
+                </td>
+                <td>
+                    <p><I>@Grandtotal</I></p>
+                </td>
+            </tr>
+        </table>
+
+    }
+</div>
+
+
+
+
+
+
+
+
+
+@Html.PagedListPager(Model, i => Url.Action("Index", "order_items", new { i, DateString = Request.QueryString["DateString"] }))

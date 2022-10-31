@@ -1,0 +1,370 @@
+﻿@model PagedList.IPagedList<Homework_06.Models.product>
+
+@using PagedList.Mvc;
+@using PagedList;
+
+@{
+    ViewBag.Title = "Index";
+}
+
+
+<h2>Products</h2>
+
+
+<form asp-action="Index" method="get">
+    <div class="row">
+        <input class="col-sm-1 form-control mr-sm-2" type="text" placeholder="Search" name="SearchString" value="@ViewData["CurrentFilter"]" aria-label="Search">
+
+
+
+        <button class="col-sm-1 btn btn-primary my-2 my-sm-0" type="submit" value="Search">Search</button>
+
+        <button class="col-sm-1 btn btn-danger my-2 my-sm-0" type="submit">@Html.ActionLink("Clear", "Index", "products", null, new { style = "color: white" })</button>
+
+        @*<button type="submit" class="col-sm-1 btn btn-info my-2 my-sm-0">@Html.ActionLink("Create New", "Create")</button>*@
+
+        @*<div class="4AddPopUp col-sm-1 btn btn-info my-2 my-sm-0" type="button" target="#myModal">
+                @Html.Label("Create")
+            </div>
+            <div class="modal fade" id="CreatePopUp" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-body">
+
+
+                    </div>
+                </div>
+            </div>*@
+
+
+        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal1" onclick="clearTextBox();">Create</button><br /><br />
+
+    </div>
+</form>
+
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.First().product_name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().model_year)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().list_price)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().brand.brand_name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().category.category_name)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.product_name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.model_year)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.list_price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.brand.brand_name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.category.category_name)
+            </td>
+            <td>
+
+                @*<button type="button">@Html.ActionLink("Edit", "Edit", new { id = item.product_id, style = "color: white" })</button>*@
+
+
+
+
+
+                <div class="1AddPopUp btn btn-primary my-2 my-sm-0" type="button">
+                    @Html.Label("Edit")
+                </div>
+                <div class="modal fade" id="EdPopUp" role="dialog">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-body">
+                                
+                                    <form>
+                                        <div class="form-group">
+                                            <label for="Name">Name</label>
+                                            <input type="text" class="form-control" id="Name" placeholder="Name" />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="Year">Year</label>
+                                            <input type="text" class="form-control" id="Year" placeholder="Year" />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="Price">Price</label>
+                                            <input type="text" class="form-control" id="Price" placeholder="Price" />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="Country">Brand</label>
+                                            <input type="text" class="form-control" id="Brand" placeholder="Brand" />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="Country">Category</label>
+                                            <input type="text" class="form-control" id="Category" placeholder="Category" />
+                                        </div>
+                                    </form>
+                                
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary" id="btnAdd" onclick="return Add();">Add</button>
+                                    @*<button type="button" class="btn btn-primary" id="btnUpdate" style="display:none;" onclick="Update();">Update</button>*@
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
+
+
+                @*<input class="btn btn-info" type="button" value="Details" id="@item.product_id" onclick="Details(this.id)" />*@
+
+
+
+                |
+
+                @*<button type="button">@Html.ActionLink("Details", "Details", new { id = item.product_id, style = "color: white" })</button>*@
+
+
+
+                <div class=" btn btn-info " type="button" value="Details" id="@item.product_id" onclick="Details(this.id)">
+
+                    @Html.Label("Details")
+
+                </div>
+                <div class="modal fade" id="DetailPopUp" role="dialog">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-body">
+                                Details goed
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+                |
+                @*<button type="button">@Html.ActionLink("Delete", "Delete", new { id = item.product_id, style = "color: white" })</button>*@
+
+
+                <div class="3AddPopUp btn btn-danger my-2 my-sm-0" type="button">
+                    @Html.Label("Delete")
+                </div>
+                <div class="modal fade" id="DelPopUp" role="dialog">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-body">
+                                Are you sure you want to delete this Record?
+                            </div>
+                            <button type="button" class="btn btn-primary" id="btnAdd" onclick="return Add();">Delete</button>
+                            @*<button type="button" class="btn btn-primary" id="btnUpdate" style="display:none;" onclick="Update();">Update</button>*@
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+                
+
+
+            </td>
+        </tr>
+    }
+
+</table>
+
+
+
+
+<div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">×</button>
+                <h4 class="modal-title" id="myModalLabel">Add Product</h4>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="Name">Name</label>
+                        <input type="text" class="form-control" id="Name" placeholder="Name" />
+                    </div>
+                    <div class="form-group">
+                        <label for="Year">Year</label>
+                        <input type="text" class="form-control" id="Year" placeholder="Year" />
+                    </div>
+                    <div class="form-group">
+                        <label for="Price">Price</label>
+                        <input type="text" class="form-control" id="Price" placeholder="Price" />
+                    </div>
+                    <div class="form-group">
+                        <label for="Country">Brand</label>
+                        <input type="text" class="form-control" id="Brand" placeholder="Brand" />
+                    </div>
+                    <div class="form-group">
+                        <label for="Country">Category</label>
+                        <input type="text" class="form-control" id="Category" placeholder="Category" />
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="btnAdd" onclick="return Add();">Add</button>
+                @*<button type="button" class="btn btn-primary" id="btnUpdate" style="display:none;" onclick="Update();">Update</button>*@
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/Users.js"></script>
+
+
+
+
+
+@*//////////////////////////////////////////////////////////////////////////////*@
+
+@*@section Scripts{
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $(".1AddPopUp").click(function (e) {
+                    $('#EdPopUp').modal('show');
+                });
+            });
+        </script>*@
+
+
+
+        @*<script type="text/javascript">
+            $(document).ready(function () {
+                $(".myModal").click(function (e) {
+                    $('#btnUpdate').modal('show');
+                });
+            });
+        </script>*@
+
+
+
+        @*<script type="text/javascript">
+            $(document).ready(function () {
+                $(".3AddPopUp").click(function (e) {
+                    $('#DelPopUp').modal('show');
+                });
+            });
+        </script>
+
+
+
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $(".4AddPopUp").click(function (e) {
+                    $('#CreatePopUp').modal('show');
+                });
+            });
+        </script>*@
+
+
+
+
+
+    @*}*@
+
+
+
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+
+        function Details(id) {
+            $.get("@Url.Action("Details", "products")/" + id,
+                function (data) { $('.modal-body').html(data); })
+            $('#myModal').modal('show');
+        }
+
+        $('#myModal').on('hidden.bs.modal', function (e) {
+            $('.modal-body').html("");
+        })
+
+
+
+        function Update(User) {
+            $.get("@Url.Action("Update", "products")/" + id,
+                function (data) { $('.modal-body').html(data); })
+            $('#myModal1').modal('show');
+        }
+
+        $('#myModal1').on('hidden.bs.modal', function (e) {
+            $('.modal-body').html("");
+        })
+
+
+
+
+
+            $(document).ready(function () {
+                $(".1AddPopUp").click(function (e) {
+                    $('#EdPopUp').modal('show');
+                });
+            });
+
+        $(document).ready(function () {
+            $(".3AddPopUp").click(function (e) {
+                $('#DelPopUp').modal('show');
+            });
+        });
+
+        $(document).ready(function () {
+            $(".2AddPopUp").click(function (e) {
+                $('#btnUpdate').modal('show');
+            });
+        });
+
+
+    </script>
+}
+
+
+
+@Html.PagedListPager(Model, i => Url.Action("Index", "products", new { i, SearchString = Request.QueryString["SearchString"] }))
+
+<script src="~/Scripts/Product.js"></script>
